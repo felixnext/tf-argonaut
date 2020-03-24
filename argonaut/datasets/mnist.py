@@ -11,7 +11,7 @@ from tensorflow.keras import datasets
 from tensorflow.keras import utils
 from bunch import Bunch
 
-from hormones.utils import Summary
+from argonaut.utils import Summary
 #from . import utils as ds_utils
 
 tf.executing_eagerly()

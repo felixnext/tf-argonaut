@@ -11,7 +11,7 @@ import numpy as np
 import tensorflow as tf
 from tensorflow.keras.callbacks import Callback
 from tensorflow import keras
-from hormones.components import heads
+from argonaut.components import heads
 
 class MultiTaskValidation(Callback):
   '''Verifies the given network against various tasks.'''

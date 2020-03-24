@@ -15,8 +15,8 @@ import numpy as np
 import pandas as pd
 from bunch import Bunch
 
-from hormones.utils import Summary
-from hormones.datasets import utils as ds_util
+from argonaut.utils import Summary
+from argonaut.datasets import utils as ds_util
 
 
 def traffic_signs_download():

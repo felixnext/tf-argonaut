@@ -4,15 +4,13 @@ Simple Script to visualize Datasets and its permutations.
 author: Felix Geilert
 '''
 
-import fire
 import cv2
-import os, sys
-sys.path.append(os.path.join(os.path.basename(os.path.abspath(__file__)), ".."))
-from hormones.datasets import mnist
-from hormones.datasets import utils
-from hormones.datasets import Pipeline
+import os
+from argonaut.datasets import mnist
+from argonaut.datasets import utils
+from argonaut.datasets import Pipeline
 
-def main(dataset="mnist.mnist_generator", permute=False, show_val=True, size=100):
+def visualize_dataset(dataset="mnist.mnist_generator", permute=False, show_val=True, size=100):
   # load the relevant data
   # FEAT: Update the script to load any training config and display resulting images / to load any generator and dispaly relevant data
   data_args = [
@@ -96,7 +94,3 @@ def main(dataset="mnist.mnist_generator", permute=False, show_val=True, size=100
 
   # clear data
   cv2.destroyAllWindows()
-
-
-if __name__ == '__main__':
-  fire.Fire(main)

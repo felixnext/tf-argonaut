@@ -11,11 +11,11 @@ import warnings
 #import numpy as np
 import tensorflow as tf
 from time import time
-from hormones.utils import Summary
-from hormones import models
-from hormones.datasets import Pipeline
-from hormones.components import heads
-from hormones import callbacks as hc
+from argonaut.utils import Summary
+from argonaut import models
+from argonaut.datasets import Pipeline
+from argonaut.components import heads
+from argonaut import callbacks as hc
 
 
 # to fix h5py bug in tf?

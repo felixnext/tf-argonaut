@@ -20,8 +20,8 @@ from bunch import Bunch
 from progressbar import ProgressBar
 import urllib
 
-from hormones.utils import Summary
-from hormones.datasets import utils as ds_util
+from argonaut.utils import Summary
+from argonaut.datasets import utils as ds_util
 
 
 def face_scrub_download():

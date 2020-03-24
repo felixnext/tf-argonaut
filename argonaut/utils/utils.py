@@ -4,7 +4,9 @@ Defines generally used items in the dataset.
 author: Felix Geilert
 '''
 
-import os, shutil, re
+import os
+import shutil
+import re
 from time import time
 from datetime import datetime
 import numpy as np

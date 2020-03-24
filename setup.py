@@ -23,16 +23,19 @@ this_directory = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(this_directory, 'readme.md'), encoding='utf-8') as f:
     long_description = f.read()
 
-setup(name='sklearn-recommender',
+setup(name='argonaut',
       version=__version__,
       description='Tensorflow Experimentation Pipeline',
       long_description=long_description,
       long_description_content_type="text/markdown",
-      keywords='recommender systems',
+      keywords='tensorflow experimentation computervision',
       url='https://github.com/felixnext/tf-argonaut',
       author='Felix Geilert',
       license='Apache License 2.0',
       packages=find_packages(),
-      install_requires=[ 'numpy', 'fire', 'bunch' ],
+      entry_points={
+          'console_scripts': ['argo-datavis=argonaut.utils.visualization:visualize_dataset'],
+      },
+      install_requires=[ 'numpy', 'fire', 'bunch', 'progressbar2', 'pandas', 'selectivesearch' ],
       include_package_data=True,
       zip_safe=False)

@@ -17,7 +17,7 @@ from bunch import Bunch
 from progressbar import ProgressBar
 
 #from hormones.utils import Summary
-from hormones.datasets import utils as ds_util
+from argonaut.datasets import utils as ds_util
 
 
 def svhn_download():

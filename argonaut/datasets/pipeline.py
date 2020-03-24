@@ -4,8 +4,8 @@ Defines a datapipeline that can be constructed from string.
 author: Felix Geilert
 '''
 
-from hormones import datasets as ds_mod
-from hormones.utils import Summary
+from argonaut import datasets as ds_mod
+from argonaut.utils import Summary
 
 class Pipeline():
   '''Loads a data pipeline based on string operations and use data for the results.

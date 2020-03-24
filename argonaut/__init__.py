@@ -7,3 +7,4 @@ from . import models
 
 from .experiments import Experiment, Baseline
 from .datasets import Pipeline
+from .utils import run_experiment

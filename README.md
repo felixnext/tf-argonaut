@@ -6,8 +6,20 @@ Library for creating visual experiment pipelines in tensorflow. Allows to test o
 
 ## Getting Started
 
-TODO
+To install the library simply use PyPi:
+```
+pip3 install tf-argonaut
+```
 
+Alternatively you can install the library directly through `setup.py`:
+```
+pip3 install .
+```
+
+You can then import the library:
+```python
+import argonaut as argo
+```
 
 ## Concepts
 

@@ -12,7 +12,7 @@ from tensorflow import strings as tf_str
 from abc import ABC, abstractmethod
 import numpy as np
 from bunch import Bunch
-from hormones.utils import Summary
+from argonaut.utils import Summary
 from progressbar import ProgressBar
 # sel-search relevant
 from selectivesearch import selective_search

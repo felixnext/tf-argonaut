@@ -15,8 +15,8 @@ import tensorflow as tf
 from tensorflow.keras import utils
 from bunch import Bunch
 
-from hormones.utils import Summary
-from hormones.datasets import utils as ds_util
+from argonaut.utils import Summary
+from argonaut.datasets import utils as ds_util
 
 
 def cub200_download():

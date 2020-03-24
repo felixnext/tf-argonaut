@@ -6,7 +6,7 @@ author: Felix Geilert
 
 #import tensorflow as tf
 from .experiment import Experiment
-from hormones.callbacks import CurriculumCallback
+from argonaut.callbacks import CurriculumCallback
 
 class Baseline(Experiment):
   '''Defines the baseline experiment structure.'''
