@@ -44,10 +44,6 @@ def visualize_dataset(dataset="mnist.mnist_generator", permute=False, show_val=T
           }
         },
         {
-          "name": "EntropyComplexityTransformer",
-          "params": { "wnd_size": 5 }
-        },
-        {
           "name": "TFDataTransformer",
           "params": {}
         }

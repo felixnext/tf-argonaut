@@ -2,7 +2,8 @@
 
 Library for creating visual experiment pipelines in tensorflow. Allows to test out different network concepts against standardized datasets.
 
-> Like the Argonauts around Jason, this library is thought to navigate various adventures and guide development of new techniques.
+> The Argonauts where a band of heros and adventures that sailed on their ship Argo through the mediterranean and navigated numerous adventures.
+> Like one of them this library is designed to turn TF into your own argo and navigate your experiments.
 
 ## Getting Started
 
@@ -21,9 +22,16 @@ You can then import the library:
 import argonaut as argo
 ```
 
+TODO: more examples to follow
+
 ## Concepts
 
-TODO
+Concepts include:
+
+* Experiments
+* Pipeline
+* Datasets
+* Callbacks
 
 ### Tools
 
@@ -31,7 +39,7 @@ The library also contains multiple tools that allow to inspect data and quickly 
 
 ## Coding Examples
 
-TODO
+TODO: more advanced coding examples
 
 ## License
 
