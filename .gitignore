@@ -108,3 +108,5 @@ venv.bak/
 
 # various project related folders
 Model_*
+
+examples/exp_logs

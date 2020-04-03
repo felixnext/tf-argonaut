@@ -13,7 +13,7 @@ from setuptools import find_packages
 __status__      = "Package"
 __copyright__   = "Copyright 2020"
 __license__     = "Apache License 2.0"
-__version__     = "0.1.0"
+__version__     = "0.2.0"
 
 # 01101100 00110000 00110000 01110000
 __author__      = "Felix Geilert"

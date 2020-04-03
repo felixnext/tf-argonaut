@@ -1,0 +1,157 @@
+{
+  "model": {
+    "class": "simple.ConvNet",
+    "params": {
+      "num_layers": 4
+    }
+  },
+  "data": [
+    {
+      "id": "mnist",
+      "dataset": "mnist.mnist_generator",
+      "params": {
+        "one_hot": false,
+        "channels": 3
+      },
+      "operations": [{
+          "name": "ExcludeTransformer",
+          "params": { "count": 3 }
+        },
+        {
+          "name": "OneHotTransformer",
+          "params": {}
+        },
+        {
+          "name": "ResizeTransformer",
+          "params": { "shape": [48, 48] }
+        },
+        {
+          "name": "FixedComplexityTransformer",
+          "params": { "value": 0.5 }
+        },
+        {
+          "name": "TFDataTransformer",
+          "params": {}
+        }]
+    }
+  ],
+  "training": [
+    {
+      "id": "mnist_1",
+      "dataset": "mnist_0",
+      "epochs": 2,
+      "batch_size": 32,
+      "shuffle": 2000,
+      "head": "ClassifyHeadConv",
+      "loss": "categorical_crossentropy",
+      "optimizer": {
+        "class": "SGD",
+        "params": {
+          "learning_rate": 0.001,
+          "momentum": 0.9,
+          "nesterov": true
+        }
+      },
+      "curriculum": {},
+      "lr": {
+        "type": "plateau",
+        "params": {
+          "monitor": "val_loss",
+          "min_delta": 0.05,
+          "patience": 5,
+          "decay": 3
+        }
+      },
+      "stop_early": {
+        "active": true,
+        "item": "val_loss",
+        "min_delta": 0.05,
+        "patience": 10
+      },
+      "tensorboard": {
+        "enable": true,
+        "histogram": true,
+        "summaries": true
+      },
+      "metrics": ["accuracy"]
+    },
+    {
+      "id": "mnist_2",
+      "dataset": "mnist_1",
+      "epochs": 2,
+      "batch_size": 32,
+      "shuffle": 2000,
+      "head": "ClassifyHeadConv",
+      "loss": "categorical_crossentropy",
+      "optimizer": {
+        "class": "SGD",
+        "params": {
+          "learning_rate": 0.001,
+          "momentum": 0.9,
+          "nesterov": true
+        }
+      },
+      "curriculum": {},
+      "lr": {
+        "type": "plateau",
+        "params": {
+          "monitor": "val_loss",
+          "min_delta": 0.05,
+          "patience": 5,
+          "decay": 3
+        }
+      },
+      "stop_early": {
+        "active": true,
+        "item": "val_loss",
+        "min_delta": 0.05,
+        "patience": 10
+      },
+      "tensorboard": {
+        "enable": true,
+        "histogram": true,
+        "summaries": true
+      },
+      "metrics": ["accuracy"]
+    },
+    {
+      "id": "mnist_3",
+      "dataset": "mnist_2",
+      "epochs": 2,
+      "batch_size": 32,
+      "shuffle": 2000,
+      "head": "ClassifyHeadConv",
+      "loss": "categorical_crossentropy",
+      "optimizer": {
+        "class": "SGD",
+        "params": {
+          "learning_rate": 0.001,
+          "momentum": 0.9,
+          "nesterov": true
+        }
+      },
+      "curriculum": {},
+      "lr": {
+        "type": "plateau",
+        "params": {
+          "monitor": "val_loss",
+          "min_delta": 0.05,
+          "patience": 5,
+          "decay": 3
+        }
+      },
+      "stop_early": {
+        "active": true,
+        "item": "val_loss",
+        "min_delta": 0.05,
+        "patience": 10
+      },
+      "tensorboard": {
+        "enable": true,
+        "histogram": true,
+        "summaries": true
+      },
+      "metrics": ["accuracy"]
+    }
+  ]
+}

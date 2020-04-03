@@ -92,7 +92,7 @@ class CurriculumCallback(Callback):
     # log data
     steps = epoch
     if batch is not None:
-        steps = self.max_batches * (epcoh - 1) + batch
+        steps = self.max_batches * (epoch - 1) + batch
     tf.summary.scalar("curriculum", self.var, step=steps)
 
   def on_epoch_start(self, epoch, logs=None):
