@@ -41,6 +41,8 @@ class MultiTaskValidation(Callback):
     self.tasks = tasks
     self.datasets = datasets
     self.input_fn = input_fn
+    # contains relevant metrics for validation (2d array holds values for each task for each metric)
+    self.metrics = []
 
   def on_batch_end(self, batch, logs={}):
     # create new row
@@ -60,29 +62,26 @@ class MultiTaskValidation(Callback):
       self.df_task[col][-1] = logs.get(col)
 
   @tf.function
-  def _eval_model(self, model, dataset, loss, metrics):
+  def _eval_model(self, model, dataset, loss, metrics, metric_names):
     '''Internal evaluation function to avoid compilation of the model.'''
-    # iterate through all datapoints
-    # TODO: avoid creation on non-first?
-    avg_loss = tf.keras.metrics.Mean(name='loss', dtype=tf.float32)
-    met_vals = []
+    # reset all metrics to avoid data overlap
     for met in metrics:
-      met_vals.append(tf.keras.metrics.Mean(name=met, dtype=tf.float32))
+      met.reset_states()
 
     # iterate through dataset
     for x, y in dataset:
       out = model(x, training=False)
-      loss_val = loss(out, y)
-      avg_loss.update_state(loss_val)
+      loss_val = loss(y, out)
+      metrics[0].update_state(loss_val)
+      out_sm = tf.argmax(out, axis=-1)
+      y_sm = tf.argmax(y, axis=-1)
       # compute the metrics
-      for i, met in enumerate(metrics):
-        met_vals[i].update_state(tf.keras.metrics.get(met)(out, y))
-
-    # generate the average output
-    res = [avg_loss.result()]
-    for i in range(len(met_vals)):
-      res.append(met_vals[i].result())
-    return res
+      for i, met_name in enumerate(metric_names):
+        if type(metrics[i + 1]) == tf.metrics.Mean:
+          m = tf.keras.metrics.get(met_name)(y_sm, out_sm)
+          metrics[i + 1].update_state(m)
+        else:
+          metrics[i + 1].update_state(y_sm, out_sm)
 
   def on_epoch_end(self, epoch, logs=None):
     # FIXME: PERFORMANCE VALIDATE THIS FUNCTION!
@@ -106,6 +105,17 @@ class MultiTaskValidation(Callback):
       is_older = (i + 1 < len(self.tasks))
       # retrieve the loss function used for the model (used only for logging here)
       loss = getattr(tf.keras.losses, task["loss"])
+
+      # check if all metrics are created
+      if i >= len(self.metrics):
+        self.metrics.append([tf.metrics.Mean(name='task_{}_loss'.format(i), dtype=tf.float32)])
+      for j, met_name in enumerate(metrics):
+        if j + 1 >= len(self.metrics[i]):
+          met = tf.metrics.get(met_name)
+          if isinstance(met, tf.metrics.Metric):
+            self.metrics[i].append(met)
+          else:
+            self.metrics[i].append(tf.metrics.Mean(name='task_{}_{}'.format(i, met_name), dtype=tf.float32))
 
       # only build the model for older than current task
       if is_older:
@@ -133,22 +143,27 @@ class MultiTaskValidation(Callback):
 
       # run evaluation
       if "type" in dataset and dataset.type == "tfdata":
-        res = self._eval_model(task_model, dataset.test.batch(task["batch_size"]), loss, metrics)
+        self._eval_model(task_model, dataset.test.batch(task["batch_size"]), loss, self.metrics[i], metrics)
         #res = task_model.evaluate(dataset.test.batch(task["batch_size"]), verbose=0)
       else:
-        task_model.compile(loss=loss, metrics=metrics)
-        res = task_model.evaluate(dataset.test.x, dataset.test.y, batch_size=task["batch_size"], verbose=0)
+        # TODO: change train function to support regular datasets as well (requires batching)
+        raise NotImplementedError("Non tf.data Datasets are currently not supported")
+        #task_model.compile(loss=loss, metrics=metrics)
+        #res = task_model.evaluate(dataset.test.x, dataset.test.y, batch_size=task["batch_size"], verbose=0)
 
       # check if dataframe has columns for the task
       metrics = ["loss"] + metrics
       for j, col in enumerate(metrics):
+        # calculate the output
+        res = self.metrics[i][j].result().numpy()
+        # write data
         col_id = "{}_{}".format(task["id"], col)
-        print("{:10}: {}".format(col_id, res[j]))
+        print("{:10}: {}".format(col_id, res))
         if col_id not in self.df:
           self.df[col_id] = np.NaN
-        self.df[col_id][-1] = res[j].numpy()
+        self.df[col_id][-1] = res
         # log data
-        tf.summary.scalar(col_id, data=res[j], step=epoch)
+        tf.summary.scalar(col_id, data=res, step=epoch)
 
       # add learning rate data
       if "learning_rate" not in self.df:

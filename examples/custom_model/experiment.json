@@ -1,6 +1,6 @@
 {
   "model": {
-    "class": "simple.ConvNet",
+    "class": "CustomNet",
     "params": {
       "num_layers": 4
     }
@@ -73,7 +73,7 @@
         "histogram": true,
         "summaries": true
       },
-      "metrics": ["accuracy"]
+      "metrics": ["Accuracy"]
     },
     {
       "id": "mnist_2",
@@ -151,7 +151,7 @@
         "histogram": true,
         "summaries": true
       },
-      "metrics": ["Accuracy"]
+      "metrics": ["accuracy"]
     }
   ]
 }

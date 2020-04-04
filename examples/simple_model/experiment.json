@@ -112,7 +112,7 @@
         "histogram": true,
         "summaries": true
       },
-      "metrics": ["Accuracy"]
+      "metrics": ["accuracy"]
     },
     {
       "id": "mnist_3",
@@ -151,7 +151,7 @@
         "histogram": true,
         "summaries": true
       },
-      "metrics": ["Accuracy"]
+      "metrics": ["accuracy"]
     }
   ]
 }

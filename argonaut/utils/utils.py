@@ -164,7 +164,8 @@ class Summary():
       # FEAT: generate combined graphs and csv (to integrate in HTML file)
 
     # generate index-html that can load and display all these information and copy it to target
-    shutil.copyfile(os.path.join(os.path.dirname(os.path.abspath(__file__)), "index.html"), os.path.join(target, "index.html"))
+    # FEAT: update the graphical output
+    #shutil.copyfile(os.path.join(os.path.dirname(os.path.abspath(__file__)), "index.html"), os.path.join(target, "index.html"))
 
 class TempCallback(tf.keras.callbacks.Callback):
   '''Callback that stores temporary results from the training process.
