@@ -40,9 +40,13 @@ class Experiment(metaclass=ABCMeta):
     data_args (dict): List of dictionaries with setup of datasets
     train_args (dict): List of dicts with training tasks and configurations
     location (str): Location to store the experiment records (default: None)
+    warm_start_dir (str): Additional directory that might be used for warm starts
+    model (tf.keras.Model): Optional model that should be used instead of the defined one (not a class but already instantiated)
+    add_params (dict): Additional parameters to be considered (overwrite config params)
     name (str): The name of the experiment (if None generated automatically)
   '''
-  def __init__(self, model_name, model_args=None, data_args=None, train_args=None, location=None, warm_start_dir=None, add_params={}, name=None):
+  def __init__(self, model_name, model_args=None, data_args=None, train_args=None, location=None, warm_start_dir=None, model=None,
+               add_params={}, name=None):
     # generate name and summary
     self.name = name if name is not None else 'experiment_{}'.format(int(time()))
     self.summary = Summary(self.name)
@@ -63,10 +67,15 @@ class Experiment(metaclass=ABCMeta):
 
     # generate the model class
     self.model_name = model_name
-    model_class = models
-    for name in model_name.split("."):
-      model_class = getattr(model_class, name)
-    self.model_class = model_class
+    self.model = model
+    self.model_class = None
+    if model is None:
+      model_class = models
+      for name in model_name.split("."):
+        model_class = getattr(model_class, name)
+      self.model_class = model_class
+
+    # define additional arguments
     self.warm_start = warm_start_dir
     self.model_add_params = add_params
     # check and load arguments
@@ -187,7 +196,7 @@ class Experiment(metaclass=ABCMeta):
     return data
 
   @classmethod
-  def load(cls, file, name=None, location=None):
+  def load(cls, file, name=None, location=None, model=None):
     '''Loads the experiment configuration from the given file
 
     Note: As this function is defined in the baseclass, the user is responsible to choose the relevant
@@ -195,6 +204,8 @@ class Experiment(metaclass=ABCMeta):
     Args:
       file (str): File to load from
       name (str): Optional deviating name (if None use stored name)
+      location (str): Path where to store experiment related data
+      model (tf.keras.Model): Optional Model instance to be used instead of the one specified in the config file
 
     Returns:
       Experiment Instance
@@ -221,7 +232,7 @@ class Experiment(metaclass=ABCMeta):
       location = data["location"]
 
     # use params to create new experiment
-    return cls(model_name, model_args, data_args, train_args, name=name, location=location, warm_start_dir=warm_start, add_params=add_params)
+    return cls(model_name, model_args, data_args, train_args, name=name, location=location, warm_start_dir=warm_start, model=model, add_params=add_params)
 
   def store(self, file=None):
     '''Stores the configuration of the experiment into a file.
@@ -398,7 +409,8 @@ class Experiment(metaclass=ABCMeta):
       location = self.location
 
     # Initial building process and loading of the data
-    self.model = self.model_class(**self.model_args)
+    if self.model is None:
+      self.model = self.model_class(**self.model_args)
 
     # load the relevant data
     self.dataset_pipe = Pipeline(self.data_args, self.train_args)

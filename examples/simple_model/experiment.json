@@ -42,7 +42,7 @@
       "epochs": 2,
       "batch_size": 32,
       "shuffle": 2000,
-      "head": "ClassifyHeadConv",
+      "head": "ClassifyHeadDense",
       "loss": "categorical_crossentropy",
       "optimizer": {
         "class": "SGD",
@@ -81,7 +81,7 @@
       "epochs": 2,
       "batch_size": 32,
       "shuffle": 2000,
-      "head": "ClassifyHeadConv",
+      "head": "ClassifyHeadDense",
       "loss": "categorical_crossentropy",
       "optimizer": {
         "class": "SGD",
@@ -120,7 +120,7 @@
       "epochs": 2,
       "batch_size": 32,
       "shuffle": 2000,
-      "head": "ClassifyHeadConv",
+      "head": "ClassifyHeadDense",
       "loss": "categorical_crossentropy",
       "optimizer": {
         "class": "SGD",

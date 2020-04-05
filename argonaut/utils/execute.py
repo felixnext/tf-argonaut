@@ -6,7 +6,7 @@ Defines execution functions that can easily be called.
 import os
 from argonaut import experiments as ex
 
-def run_experiment(exp, config, location="../exp_logs", name=None, experiment_namespace=None, **args):
+def run_experiment(exp, config, location="../exp_logs", name=None, experiment_namespace=None, model=None, **args):
   '''Creates the experiment and runs it.
 
   Args:
@@ -45,11 +45,10 @@ def run_experiment(exp, config, location="../exp_logs", name=None, experiment_na
     raise ValueError("Could not find the config file ({})".format(config))
 
   # generate the experiment
-  experiment = ex_cls.load(config, name=name, location=location, **args)
+  experiment = ex_cls.load(config, name=name, location=location, model=model, **args)
 
   # execute
   experiment.fit()
 
   # output summary
   print(str(experiment.summary))
-
