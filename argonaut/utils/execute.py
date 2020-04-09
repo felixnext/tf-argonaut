@@ -6,7 +6,7 @@ Defines execution functions that can easily be called.
 import os
 from argonaut import experiments as ex
 
-def run_experiment(exp, config, location="../exp_logs", name=None, experiment_namespace=None, model=None, **args):
+def run_experiment(exp, config, location="../exp_logs", name=None, experiment_namespace=None, model=None, model_namespace=None, **args):
   '''Creates the experiment and runs it.
 
   Args:
@@ -17,6 +17,8 @@ def run_experiment(exp, config, location="../exp_logs", name=None, experiment_na
     location (str): Path to the location of the config files used
     name (str): Name of the experiment (will replace default name)
     experiment_namespace (module): Python Module from which experiments might be loaded (if not found default to internal experiments)
+    model (tf.keras.Model): Model that will be loaded (instead the one specified in arguments)
+    model_namespace (module): Python Module from which experiments can be loaded alternatively (if not found in internal experiments)
     args (dict): Additional parameters that should be overwritten from config
   '''
   # retrieve name from data
@@ -45,7 +47,7 @@ def run_experiment(exp, config, location="../exp_logs", name=None, experiment_na
     raise ValueError("Could not find the config file ({})".format(config))
 
   # generate the experiment
-  experiment = ex_cls.load(config, name=name, location=location, model=model, **args)
+  experiment = ex_cls.load(config, name=name, location=location, model=model, model_namespace=model_namespace, **args)
 
   # execute
   experiment.fit()

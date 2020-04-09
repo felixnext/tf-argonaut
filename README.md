@@ -2,7 +2,7 @@
 
 Library for creating visual experiment pipelines in tensorflow. Allows to test out different network concepts against standardized datasets.
 
-> The Argonauts where a band of heros and adventures that sailed on their ship Argo through the mediterranean and navigated numerous adventures.
+> The Argonauts were a band of heros and adventures that sailed on their ship Argo through the mediterranean and navigated numerous adventures.
 > Like one of them this library is designed to turn TF into your own argo and navigate your experiments.
 
 `Argonaut` was originally build to allow easy research experimentation of multi-task settings against common datasets (thereby reducing the overhead required for experimentation).

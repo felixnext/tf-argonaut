@@ -42,11 +42,12 @@ class Experiment(metaclass=ABCMeta):
     location (str): Location to store the experiment records (default: None)
     warm_start_dir (str): Additional directory that might be used for warm starts
     model (tf.keras.Model): Optional model that should be used instead of the defined one (not a class but already instantiated)
+    model_namespace (module): Python module to load the model from if not found internally
     add_params (dict): Additional parameters to be considered (overwrite config params)
     name (str): The name of the experiment (if None generated automatically)
   '''
   def __init__(self, model_name, model_args=None, data_args=None, train_args=None, location=None, warm_start_dir=None, model=None,
-               add_params={}, name=None):
+               model_namespace=None, add_params={}, name=None):
     # generate name and summary
     self.name = name if name is not None else 'experiment_{}'.format(int(time()))
     self.summary = Summary(self.name)
@@ -71,8 +72,25 @@ class Experiment(metaclass=ABCMeta):
     self.model_class = None
     if model is None:
       model_class = models
-      for name in model_name.split("."):
-        model_class = getattr(model_class, name)
+      # check if found in internal or external namespace
+      try:
+        for name in model_name.split("."):
+          model_class = getattr(model_class, name)
+        print("INFO: Found argo model.")
+      except:
+        if model_namespace is not None:
+          try:
+            model_class = model_namespace
+            for name in model_name.split("."):
+              model_class = getattr(model_class, name)
+            print("INFO: Found external model.")
+          except:
+            raise ValueError("ERROR: Could not find model name specified in config in namespaces.")
+        else:
+            raise ValueError("ERROR: Could not find model name specified in config in internal models.")
+      else:
+        print("INFO: Using predefined model.")
+
       self.model_class = model_class
 
     # define additional arguments
@@ -196,7 +214,7 @@ class Experiment(metaclass=ABCMeta):
     return data
 
   @classmethod
-  def load(cls, file, name=None, location=None, model=None):
+  def load(cls, file, name=None, location=None, model=None, model_namespace=None):
     '''Loads the experiment configuration from the given file
 
     Note: As this function is defined in the baseclass, the user is responsible to choose the relevant
@@ -206,6 +224,7 @@ class Experiment(metaclass=ABCMeta):
       name (str): Optional deviating name (if None use stored name)
       location (str): Path where to store experiment related data
       model (tf.keras.Model): Optional Model instance to be used instead of the one specified in the config file
+      model_namespace (module): Python module to retrieve the model from if not found internally
 
     Returns:
       Experiment Instance
@@ -232,7 +251,8 @@ class Experiment(metaclass=ABCMeta):
       location = data["location"]
 
     # use params to create new experiment
-    return cls(model_name, model_args, data_args, train_args, name=name, location=location, warm_start_dir=warm_start, model=model, add_params=add_params)
+    return cls(model_name, model_args, data_args, train_args, name=name, location=location, warm_start_dir=warm_start, model=model,
+               model_namespace=model_namespace, add_params=add_params)
 
   def store(self, file=None):
     '''Stores the configuration of the experiment into a file.
@@ -270,6 +290,7 @@ class Experiment(metaclass=ABCMeta):
       inputs = self._build_inputs(dataset, "default")
 
       # build the model
+      # TODO: update function to retrieve head model (allow external namespace)
       head_model = getattr(heads, task["head"])(dataset, name=task["id"])
       model_out, aux_losses = self.build(inputs, task, head_model, False, "default")
       loss = getattr(tf.keras.losses, task["loss"])
