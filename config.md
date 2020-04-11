@@ -3,6 +3,21 @@
 The general configuration for each experiment is defined in a `json` file (see `sample_config.json` as an example).
 There are three top level structures: `model`, `data` and `training`.
 
+## Templates
+
+As most of the variables between different experiments should not change (to measure the impact of the ones that do change), templates are an important concept to save time!
+You can define a list of template files at the root level of the `json` file (alongside `model`, `data` and `training`), which define the relative path to a template file.
+These template files are not required to have all or any of the three top level structure and can themselves relate to other templates.
+(The path is relative to the current template file).
+
+```json
+"templates": [
+    "../experiment_tmp/tmp_multitask.json"
+]
+```
+
+> Keep in mind, that if you define multiple template files they are loaded in the given order and **later ones will overwrite settings of previous loaded templates** (in case they are defined in both files).
+
 ## model
 
 The model task defines the general topology used for the task. it contains the following keywords:

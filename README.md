@@ -4,6 +4,7 @@ Library for creating visual experiment pipelines in tensorflow. Allows to test o
 
 > The Argonauts were a band of heros and adventures that sailed on their ship Argo through the mediterranean and navigated numerous adventures.
 > Like one of them this library is designed to turn TF into your own argo and navigate your experiments.
+> So set sail!
 
 `Argonaut` was originally build to allow easy research experimentation of multi-task settings against common datasets (thereby reducing the overhead required for experimentation).
 
@@ -45,16 +46,24 @@ The library also contains multiple tools that allow to inspect data and quickly 
 
 ## 💾‍ Coding Examples
 
-TODO: more advanced coding examples
+**Code Examples:** This repository contains several examples on how to use the library and leverage the different concepts in the [example folder](examples/readme.md).
+
+The main idea behind `argonaut` is to reduce the lines of code required to write and test new research ideas.
+Therefore most coding samples contain of regular model or layer definitions inside keras/TensorFlow, a configuration file that specifies an experiment and a `run.py` file, which simply contains one line of code to start the experiment.
 
 `Argonaut` also comes with various pre-defined models (although you can also easily plug in every keras model, given right input and output structrue).
 In particular these models include:
 
-TODO
+* `simple.ConvNet` - Simple convolutional network with adjustable number of layers
+* `simple.MLP` - Multi-Layer Perceptron with adjustable number of layers
+* `alexnet.AlexNet` - The original Alexnet network, as described in [this paper](https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf)
+* `vgg16.VGG16` - The VGG16 network, as described in [this paper](https://arxiv.org/abs/1409.1556)
+* `densenet.DenseNet121` - (Other Variants: `169`, `201`, `264`) The DenseNet Variant as described in [this paper](https://arxiv.org/abs/1608.06993)
+* `resnetv2.ResNet_v2_50` - (Other Variants: `101`, `152`) The Residual Network Version 2, as described in [this paper](https://arxiv.org/abs/1603.05027)
 
 ### Debugging
 
-TODO: integrate options for TF2 debugging
+**Coming Soon:** Options to better integrate the TF2 debugging options are planned (PRs are welcome).
 
 ## ⚙ Configuration
 

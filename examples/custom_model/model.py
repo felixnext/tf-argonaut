@@ -4,4 +4,5 @@ import tensorflow as tf
 from tensorflow import keras
 
 class CustomNet(keras.Model):
-    pass
+    def __init__(self, layers):
+        pass
