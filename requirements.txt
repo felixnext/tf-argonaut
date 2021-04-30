@@ -11,4 +11,4 @@ scikit-learn==0.21.3
 scipy==1.3.3
 selectivesearch==0.4
 tornado==6.0.3
-urllib3==1.25.7
+urllib3==1.25.8
