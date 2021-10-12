@@ -1,7 +1,7 @@
 bunch==1.0.1
 fire==0.2.1
 numpy==1.17.4
-opencv-python==4.1.2.30
+opencv-python==4.2.0.32
 pandas==0.24.2
 progressbar2==3.50.0
 requests==2.22.0
